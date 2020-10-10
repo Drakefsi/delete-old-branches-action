@@ -1,0 +1,14 @@
+name: "Delete old branches"
+description: "Delete branches in a github repo without cloning the repo"
+inputs:
+  min-num-branches:
+    description: "[integer] Minimum number of branches that will always be kept"
+    default: "20"
+    required: false
+  days-to-keep-branches:
+    description: "[integer] Days branches will be kept, after this they'll be deleted"
+    default: "14"
+    required: false
+runs:
+  using: "node12"
+  main: "build/main.js"
