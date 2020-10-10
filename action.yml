@@ -1,6 +1,9 @@
 name: "Delete old branches"
 description: "Delete branches in a github repo without cloning the repo"
 inputs:
+  repo-token:
+    description: "GITHUB_TOKEN with access to the repo this action is running on"
+    required: true
   min-num-branches:
     description: "[integer] Minimum number of branches that will always be kept"
     default: "20"

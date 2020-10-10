@@ -25863,18 +25863,14 @@ exports.handleError = exports.printSuccessMessage = exports.deleteOldBranches = 
 var github = __importStar(__webpack_require__(5438));
 var core = __importStar(__webpack_require__(2186));
 var date_fns_1 = __webpack_require__(3314);
-console.log('process.env', process.env);
+var GITHUB_TOKEN = core.getInput("repo-token");
 var MIN_NUM_BRANCHES = parseInt(core.getInput("min-num-branches"), 10);
-console.log('MIN_NUM_BRANCHES', MIN_NUM_BRANCHES);
 var DAYS_TO_KEEP_BRANCHES = parseInt(core.getInput("days-to-keep-branches"), 10);
-console.log('DAYS_TO_KEEP_BRANCHES', DAYS_TO_KEEP_BRANCHES);
-var fullRepo = process.env.GITHUB_REPOSITORY; // eg octocat/hello-world
-if (!(fullRepo && typeof fullRepo === "string" && fullRepo.includes("/"))) {
+var fullRepoName = process.env.GITHUB_REPOSITORY; // eg octocat/hello-world
+if (!(fullRepoName && typeof fullRepoName === "string" && fullRepoName.includes("/"))) {
     throw new Error();
 }
-var _a = fullRepo === null || fullRepo === void 0 ? void 0 : fullRepo.split("/"), GH_OWNER = _a[0], GH_REPO = _a[1];
-console.log('GH_REPO', GH_REPO);
-console.log('GH_OWNER', GH_OWNER);
+var _a = fullRepoName.split("/"), GH_OWNER = _a[0], GH_REPO = _a[1];
 var listBranchesQuery = "\nquery listBranches($owner: String!, $name: String!, $after: String, $pageSize: Int!) {\n  repository(owner: $owner, name: $name) {\n    defaultBranchRef { name }\n    refs(refPrefix: \"refs/heads/\", first: $pageSize, after: $after) {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        name\n        target {\n          ... on Commit { committedDate }\n        }\n      }\n    }\n  }\n}\n";
 var globalOctokit;
 /**

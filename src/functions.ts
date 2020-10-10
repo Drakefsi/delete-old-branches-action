@@ -2,21 +2,17 @@ import * as github from "@actions/github";
 import * as core from "@actions/core";
 import { differenceInDays, isBefore } from "date-fns";
 
-console.log('process.env', process.env);
+const GITHUB_TOKEN = core.getInput("repo-token");
 const MIN_NUM_BRANCHES = parseInt(core.getInput("min-num-branches"), 10);
-console.log('MIN_NUM_BRANCHES', MIN_NUM_BRANCHES);
 const DAYS_TO_KEEP_BRANCHES = parseInt(
   core.getInput("days-to-keep-branches"),
   10
 );
-console.log('DAYS_TO_KEEP_BRANCHES', DAYS_TO_KEEP_BRANCHES);
-const fullRepo = process.env.GITHUB_REPOSITORY; // eg octocat/hello-world
-if (!(fullRepo && typeof fullRepo === "string" && fullRepo.includes("/"))) {
+const fullRepoName = process.env.GITHUB_REPOSITORY; // eg octocat/hello-world
+if (!(fullRepoName && typeof fullRepoName === "string" && fullRepoName.includes("/"))) {
   throw new Error();
 }
-const [GH_OWNER, GH_REPO] = fullRepo?.split("/");
-console.log('GH_REPO', GH_REPO);
-console.log('GH_OWNER', GH_OWNER);
+const [GH_OWNER, GH_REPO] = fullRepoName.split("/");
 
 export type Branch = {
   name: string;
