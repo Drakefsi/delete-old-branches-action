@@ -8,7 +8,7 @@
   "scripts": {
     "test": "yarn mocha",
     "test:watch": "yarn mocha --watch",
-    "workflow": "node lib/index.js"
+    "build": "ncc build src/index.ts"
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
@@ -23,8 +23,15 @@
     "typescript": "^4.0.3"
   },
   "mocha": {
-    "extension": ["ts"],
-    "spec": ["src/**/*.spec.ts"],
+    "extension": [
+      "ts"
+    ],
+    "spec": [
+      "src/**/*.spec.ts"
+    ],
     "require": "ts-node/register"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.24.1"
   }
 }

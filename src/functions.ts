@@ -2,9 +2,21 @@ import * as github from "@actions/github";
 import * as core from "@actions/core";
 import { differenceInDays, isBefore } from "date-fns";
 
-// TODO read these from env or config
-const GH_OWNER = "jay-aye-see-kay";
-const GH_REPO = "ATEST-sink";
+console.log('process.env', process.env);
+const MIN_NUM_BRANCHES = parseInt(core.getInput("min-num-branches"), 10);
+console.log('MIN_NUM_BRANCHES', MIN_NUM_BRANCHES);
+const DAYS_TO_KEEP_BRANCHES = parseInt(
+  core.getInput("days-to-keep-branches"),
+  10
+);
+console.log('DAYS_TO_KEEP_BRANCHES', DAYS_TO_KEEP_BRANCHES);
+const fullRepo = process.env.GITHUB_REPOSITORY; // eg octocat/hello-world
+if (!(fullRepo && typeof fullRepo === "string" && fullRepo.includes("/"))) {
+  throw new Error();
+}
+const [GH_OWNER, GH_REPO] = fullRepo?.split("/");
+console.log('GH_REPO', GH_REPO);
+console.log('GH_OWNER', GH_OWNER);
 
 export type Branch = {
   name: string;
@@ -110,10 +122,6 @@ export const getBranches = async (): Promise<Branch[]> => {
 export const selectBranchesToDelete = async (
   unsortedBranches: Branch[]
 ): Promise<Branch[]> => {
-  // TEMP, read these from somewhere
-  const MIN_NUM_BRANCHES = 20;
-  const DAYS_TO_KEEP_BRANCHES = 28;
-
   const newestFirstSort = (n0: Branch, n1: Branch) =>
     isBefore(n0.committedDate, n1.committedDate) ? 1 : -1;
   const branches = unsortedBranches.sort(newestFirstSort);
