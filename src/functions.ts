@@ -65,11 +65,7 @@ const getOctokit = () => {
   if (globalOctokit) {
     return globalOctokit;
   }
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) {
-    throw new Error("GITHUB_TOKEN token not set");
-  }
-  const octokit = github.getOctokit(token);
+  const octokit = github.getOctokit(GITHUB_TOKEN);
   globalOctokit = octokit;
   return octokit;
 };

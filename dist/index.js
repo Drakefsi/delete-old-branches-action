@@ -25880,11 +25880,7 @@ var getOctokit = function () {
     if (globalOctokit) {
         return globalOctokit;
     }
-    var token = process.env.GITHUB_TOKEN;
-    if (!token) {
-        throw new Error("GITHUB_TOKEN token not set");
-    }
-    var octokit = github.getOctokit(token);
+    var octokit = github.getOctokit(GITHUB_TOKEN);
     globalOctokit = octokit;
     return octokit;
 };
