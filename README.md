@@ -23,6 +23,21 @@ jobs:
           days-to-keep-branches: 14
 ```
 
+It could also be run on a schedule using POSIX cron syntax. According to the GitHub docs scheduled workflows don't actually run on a schedule, they need to be triggered by a commit to the default or base branch. So they're more like rate limited workflows.
+
+```yaml
+name: cleanup-old-branches
+on:
+  schedule:
+    - cron "30 2 * * *"
+    # will run every day at 2:30am UTC (12:30pm AEST/1:30pm AEDT)
+jobs:
+  ...
+```
+
+### More info
+- https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+- https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows#schedule
 
 ## Developing
 
